@@ -1,15 +1,10 @@
 ---
 # try also 'default' to start simple
-theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
-# apply any windi css classes to the current slide
-class: 'text-center'
+theme: geist
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 highlighter: shiki
 # show line numbers in code blocks
-lineNumbers: false
 # some information about the slides, markdown enabled
 info: |
   ## Slidev Starter Template
@@ -21,383 +16,243 @@ drawings:
   persist: false
 # use UnoCSS
 css: unocss
+layout: image
+image: /book.jpg
 ---
 
-# Welcome to Slidev
-
-Presentation slides for developers
-
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
+<!-- # テストに用いる Storybook -->
+<div class="relative h-full"> 
+  <div class="absolute inset-0 flex items-center">
+    <h1 class="m-0 pl-4">テストに用いるStorybook</h1>
+  </div>
 </div>
-
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
-
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
 
 ---
 
-# What is Slidev?
+<Toc/>
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+---
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+<h1>自己紹介</h1>
+<div class="flex gap-20">
+  <img src="/profile.jpg" class="mt-10 h-60 rounded shadow" />
+  <div>
+    <h2>
+      小張 泰志(こばり たいし)
+      <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
+      class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
+        <carbon-logo-github />
+      </a>
+    </h2>
+    <h3>・21卒</h3>
+    <h3>・フロントエンド</h3>
+    <h2>最近熱くなったこと</h2>
+    <h3>・WBC優勝</h3>
+  </div>
+</div>
 
-<br>
-<br>
+---
+layout: two-cols
+---
+# Storybookとは
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+## UIコンポーネントを可視化するツール
+### ・デザイナー、PdMとの共有
+<v-click>
+  <h3>・テストができる←今日話すこと</h3>
+</v-click>
 
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
+
+::right::
+
+<div class="flex items-center h-full">
+  <img src="/storybook.png" class="object-contain rounded shadow" />
+</div>
 
 <style>
 h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  color: #FE4785
 }
 </style>
 
-<!--
-Here is another comment.
--->
-
 ---
-
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
-
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
+layout: two-cols
 ---
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
----
+# play functionを使う
 
-# Code
+```tsx {all|1,4-16}
+// ReportFiltersCheckbox.stories.tsx
+export const UncheckAll = {
+  name: '全てのチェックを外せること',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // 全てのチェックを外す
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: 'パブリシティ' }),
+    );
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: 'パブリシティ転載' }),
+    );
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: 'リリース原文転載' }),
+    );
+  },
+} satisfies Story;
 
-Use code snippets and get the highlighting directly![^1]
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
 ```
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
+::right::
 
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
+<div class="flex items-center h-full">
+  <img src="/play-function.png" class="object-contain rounded shadow" />
+</div>
 
 <style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
+.slidev-layout {
+  gap: 8px
 }
-.footnotes {
-  @apply text-sm opacity-75;
+</style>
+
+---
+layout: two-cols
+
+
+---
+
+<style>
+.col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.footnote-backref {
-  display: none;
+</style>
+
+
+# Storyをテストファイルに読み込む
+<h2>assertは<img src="https://vitest.dev/logo-shadow.svg" class="h-8 inline-block rounded shadow" />
+vitestで行う</h2>
+
+### ・Storybookをbuildせずに実行できるので速い
+
+### ・mockが使える
+
+::right::
+
+```tsx {all|1,10|1,11-17}
+// ReportFiltersCheckbox.test.tsx
+import { composeStories } from '@storybook/react';
+import { render } from '@testing-library/react';
+import * as stories from './ReportFiltersCheckbox.stories';
+
+const { UncheckAll } = composeStories(stories);
+
+it('全てのチェックを外せること', async () => {
+  const { container, getByRole } = render(<UncheckAll />);
+  await UncheckAll.play({ canvasElement: container });
+  expect(getByRole('checkbox', { name: 'パブリシティ' })).not.toBeChecked();
+  expect(
+    getByRole('checkbox', { name: 'パブリシティ転載' }),
+  ).not.toBeChecked();
+  expect(
+    getByRole('checkbox', { name: 'リリース原文転載' }),
+  ).not.toBeChecked();
+});
+```
+
+---
+
+# 導入した目的とそのギャップ
+
+## 1. play functionによるテストの可視化
+<h3 class="color-green-500">達成できた</h3>
+
+## 2. Figmaプラグインの導入
+実装とFigmaのズレを減らしたかった
+
+Chromaticを導入しないといけなかったので断念
+
+## 3. VRT
+### 今後進めていきたい
+
+<style>
+h1 {
+  margin-top: 1rem
 }
 </style>
 
 ---
 
-# Components
+# 意外な恩恵
 
-<div grid="~ cols-2 gap-4">
-<div>
+## ・ユニットテストのデバッグが楽になった
 
-You can use Vue components directly inside your slides.
+## ・AAA(Arrange, Act, Assert)を意識するようになった
+Assertを独立して書くので、テストの意図が明確になった。
 
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
+Assert後にActするようなパターンも書きづらくなった。
 
 
 ---
-class: px-20
----
 
-# Themes
+# 今後の課題
+## データ取得するコンポーネントのStorybook化
+mswなどを使ってmockできる部分とそうでない部分がある
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
+## どこまでを Storybook に書くのか
 
-<div grid="~ cols-2 gap-2" m="-t-2">
+・境界があいまい
 
-```yaml
----
-theme: default
----
-```
+・すべてを Storybook に寄せることは不可能
 
-```yaml
----
-theme: seriph
----
-```
+・mockがStorybookに導入されたら？
 
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
 
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
+> We have a long list of quality of life improvements here that we’ll be rolling out in 7.x, especially around better mocking, full page testing, and compatibility.[^1]
 
-</div>
+[^1]: [Storybook 7.0](https://storybook.js.org/blog/storybook-7-0/)
 
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
 
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
+<style>
+h1 {
+  margin-top: 1rem
 }
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
+</style>
 
 ---
 
-# LaTeX
+# 今までのStorybookの使い方と比較して
 
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
+<h2><span class="color-pink-500">今まで</span>：実装者以外とのコミュニケーションとしてのツール</h2>
 
-<br>
+### ただ、、、
+デザイナーは figma を見るし、QA は staging を見る
 
-Inline $\sqrt{3x-1}+(1+x)^2$
+エンジニアもそんなに Storybook を見ない
 
-Block
-$$
-\begin{array}{c}
+<h2 class="color-green-500">テストツールとして活用後</h2>
 
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
+### エンジニアがStorybookを見る機会が増えた
+・バックエンドができるまでの開発
 
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
+・テストの説明
 
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
+<style>
+h1 {
+  margin-top: 1rem
+}
+</style>
 
 ---
 
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
-
----
-src: ./pages/multiple-entries.md
-hide: false
----
+# まとめ
+## Storybookをテストに活用して、テストが可視化された
+## まだ道半ば🛣️
+### ・VRTの導入
+### ・Storybookのアップデートにも注視していきたい
 
 ---
 layout: center
-class: text-center
 ---
 
-# Learn More
+# ご清聴ありがとうございました✨
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
