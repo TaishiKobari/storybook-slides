@@ -51,9 +51,14 @@ image: /book.jpg
   </div>
 </div>
 
+<!--
+~00:30
+-->
+
 ---
 layout: two-cols
 ---
+
 # Storybookとは
 
 ## UIコンポーネントを可視化するツール
@@ -75,9 +80,14 @@ h1 {
 }
 </style>
 
+<!--
+~01:00
+-->
+
 ---
 layout: two-cols
 ---
+
 # play functionを使う
 
 ```tsx {all|1,4-16}
@@ -113,10 +123,18 @@ export const UncheckAll = {
 }
 </style>
 
+<!--
+画面を見せる
+
+https://storybook-hosting-bucket.s3.ap-northeast-1.amazonaws.com/clipping/main/index.html?path=/story/components-reportfilters-reportfilterscheckbox--uncheck-all
+
+playにユーザーを書く
+
+~03:00
+-->
+
 ---
 layout: two-cols
-
-
 ---
 
 <style>
@@ -159,6 +177,14 @@ it('全てのチェックを外せること', async () => {
 });
 ```
 
+<!--
+act = play
+
+assert = expect
+
+~04:00
+-->
+
 ---
 
 # 導入した目的とそのギャップ
@@ -180,6 +206,13 @@ h1 {
 }
 </style>
 
+<!--
+Figmaプラグインの話
+- Figma上でStorybookを確認できる
+VRT
+~04:30
+-->
+
 ---
 
 # 意外な恩恵
@@ -191,6 +224,17 @@ Assertを独立して書くので、テストの意図が明確になった。
 
 Assert後にActするようなパターンも書きづらくなった。
 
+<!--
+デバッグが楽になった
+
+今まではブラックボックスだったjest/vitestのテスト
+他の人が書いたテストのデバッグ
+
+ユニットテストはassertが1つであるのが望ましい
+integrationテストとの分離
+
+~05:00
+-->
 
 ---
 
@@ -218,6 +262,14 @@ h1 {
 }
 </style>
 
+<!--
+mswを使っているが、recoilなどライブラリの噛み合わせが悪い場合もある
+
+assertをStorybookに書かないのに利点はあるが、理由はない
+
+~06:00
+-->
+
 ---
 
 # 今までのStorybookの使い方と比較して
@@ -242,6 +294,12 @@ h1 {
 }
 </style>
 
+<!--
+Storybookの立ち位置が変わった話
+
+~07:00
+-->
+
 ---
 
 # まとめ
@@ -250,9 +308,12 @@ h1 {
 ### ・VRTの導入
 ### ・Storybookのアップデートにも注視していきたい
 
+<!--
+~07:30
+-->
+
 ---
 layout: center
 ---
 
 # ご清聴ありがとうございました✨
-
